@@ -4,7 +4,11 @@ Repository for the socraites project. In order to run this locally, create a fil
 ```
 OPENAI_API_KEY="sk-proj-<truncated>"
 LANGCHAIN_API_KEY="lsv2_pt_<truncated>"
+
+[passwords]
+username = "password"
 ```
+Each line under `[passwords]` represents a username and its password. Add multiple lines as required. Make sure to set complex passwords
 
 Before running your app, install the requirements using `pip install -r requirements.txt`.
 

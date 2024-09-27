@@ -2,12 +2,14 @@ import streamlit as st
 from openai import OpenAI
 from langchain.agents.openai_assistant import OpenAIAssistantRunnable
 from utils.environment import initialize
+from utils.auth import menu
 
 st.set_page_config(
     page_title="SocrAItes",
     page_icon="icon.jpg",
 )
 
+menu()
 initialize()
 client = OpenAI()
 #assistant = client.beta.assistants.retrieve("asst_V0S3cfZAOfSqV7ZrC6SB06og")
