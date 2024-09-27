@@ -18,6 +18,7 @@ def _check_password():
         ):
             st.session_state.authenticated = True
             st.session_state.username = username
+            st.session_state.role = st.secrets.roles.get(username, "user")  # Default to "user" if role not specified
             st.rerun()
         else:
             st.error("User not known or password incorrect.")
