@@ -4,6 +4,8 @@ from langchain.agents.openai_assistant import OpenAIAssistantRunnable
 from utils.environment import initialize
 from utils.auth import menu
 import os, pymongo
+from utils.rag_funtion import rag_tools
+from langchain_core.agents import AgentFinish
 
 st.set_page_config(
     page_title="SocrAItes",
@@ -13,11 +15,25 @@ st.set_page_config(
 menu()
 initialize()
 client = OpenAI()
-socraites_agent = OpenAIAssistantRunnable(assistant_id=os.getenv('SOCRAITES_ASST'), as_agent=True)
+socraites_agent = OpenAIAssistantRunnable(assistant_id=os.getenv('SOCRAITES_ASST'), tools=rag_tools, as_agent=True)
 fainman_agent = OpenAIAssistantRunnable(assistant_id=os.getenv('FAINMAN_ASST'), as_agent=True)
 
-def execute_agent(agent, input):
+def execute_agent(agent, tools, input):
+    tool_map = {tool.name: tool for tool in tools}
     response = agent.invoke(input)
+    while not isinstance(response, AgentFinish):
+        tool_outputs = []
+        for action in response:
+            tool_output = tool_map[action.tool].invoke(action.tool_input)
+            tool_outputs.append({"output": tool_output, "tool_call_id": action.tool_call_id})
+        response = agent.invoke(
+            {
+                "tool_outputs": tool_outputs,
+                "run_id": action.run_id,
+                "thread_id": action.thread_id
+            }
+        )
+
     return response.dict()['return_values']['output']
 
 st.image("icon.jpg", width=100)
@@ -74,7 +90,7 @@ if prompt := st.chat_input("What is bothering you?"):
 
     # Display assistant response in chat message container
     with st.chat_message("assistant", avatar='icon.jpg'):
-        asst_response = execute_agent(socraites_agent, {"content": prompt, "thread_id": st.session_state.thread_id})
+        asst_response = execute_agent(socraites_agent, rag_tools, {"content": prompt, "thread_id": st.session_state.thread_id})
         response = st.markdown(asst_response)
     # Add assistant response to chat history and mongo
     st.session_state.messages.append({"role": "assistant", "content": asst_response})

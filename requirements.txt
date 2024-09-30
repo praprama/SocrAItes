@@ -7,3 +7,5 @@ python-dotenv
 openai
 streamlit
 pymongo
+langchain-mongodb
+pypdf
