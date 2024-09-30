@@ -2,6 +2,7 @@ import streamlit as st
 from openai import OpenAI
 from utils.environment import initialize
 from utils.auth import menu_with_redirect
+import os
 
 st.set_page_config(
     page_title="SocrAItes instruction editor",
@@ -17,15 +18,24 @@ if st.session_state.role not in ["admin"]:
 
 initialize()
 client = OpenAI()
-assistant = client.beta.assistants.retrieve("asst_V0S3cfZAOfSqV7ZrC6SB06og")
+socraites_assistant = client.beta.assistants.retrieve(os.getenv('SOCRAITES_ASST'))
 
 st.image("icon.jpg", width=100)
 st.markdown("# SocrAItes instruction editor")
 
-instructions = st.text_area(label='Assistant Instruction', value=assistant.instructions, height=600)
-if st.button('Submit'):
+socraites_instructions = st.text_area(label='SocrAItes Assistant Instruction', value=socraites_assistant.instructions, height=600)
+if st.button('Submit', key='socraites'):
     updated_assistant = client.beta.assistants.update(
-        "asst_V0S3cfZAOfSqV7ZrC6SB06og",
-        instructions=instructions
+        os.getenv('SOCRAITES_ASST'),
+        instructions=socraites_instructions
+    )
+    st.rerun()
+
+fainman_assistant = client.beta.assistants.retrieve(os.getenv('FAINMAN_ASST'))
+fainman_instructions = st.text_area(label='FAInman Assistant Instruction', value=fainman_assistant.instructions, height=600)
+if st.button('Submit', key='fainman'):
+    updated_assistant = client.beta.assistants.update(
+        os.getenv('FAINMAN_ASST'),
+        instructions=fainman_instructions
     )
     st.rerun()
