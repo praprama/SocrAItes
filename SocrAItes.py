@@ -13,7 +13,9 @@ st.set_page_config(
     page_icon="icon.jpg",
 )
 
-menu()
+# Uncomment below line to re-enable authentication
+
+# menu()
 initialize()
 client = OpenAI()
 socraites_agent = OpenAIAssistantRunnable(assistant_id=os.getenv('SOCRAITES_ASST'), tools=rag_tools, as_agent=True)

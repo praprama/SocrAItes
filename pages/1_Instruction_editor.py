@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 from utils.environment import initialize
-from utils.auth import menu_with_redirect
+from utils.auth import menu, menu_with_redirect
 import os
 
 st.set_page_config(
@@ -9,7 +9,9 @@ st.set_page_config(
     page_icon="icon.jpg",
 )
 
-menu_with_redirect()
+# Uncomment below line and comment menu() once auth is enabled in the main page
+# menu_with_redirect()
+menu()
 
 # Verify the user's role
 if st.session_state.role not in ["admin"]:
