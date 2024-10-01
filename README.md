@@ -50,5 +50,5 @@ NOTE: You need to create an assistant on OpenAI and replace the assistant ID in 
 
 ## Authors
 Prapanch Ramamoorthy - prap.ram@gmail.com
-Atri Basu
-Bhavik Shah
+Atri Basu - mailbasuatri@gmail.com
+Bhavik Shah - bhavikt2012@gmail.com

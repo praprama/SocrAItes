@@ -38,7 +38,6 @@ def execute_agent(agent, tools, input):
 
 st.image("icon.jpg", width=100)
 st.markdown("# Hi. I am SocrAItes. How can I help you?")
-st.write(os.getenv('MONGO_URL'))
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
