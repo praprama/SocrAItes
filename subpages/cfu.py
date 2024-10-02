@@ -18,8 +18,8 @@ def cfu():
     st.image("icon.jpg", width=100)
     st.markdown("# Let's make sure you have your notes by answering a set of questions")
 
-    #doc = st.session_state.mongo_collection.find_one({"thread_id": 'thread_fcKnOmbsNL4xI2cpkDPiNSkU'})
-    doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
+    doc = st.session_state.mongo_collection.find_one({"thread_id": 'thread_fcKnOmbsNL4xI2cpkDPiNSkU'})
+    #doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
     messages = doc['messages']
 
     if st.button("View transcript"):
