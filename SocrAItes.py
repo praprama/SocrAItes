@@ -41,7 +41,7 @@ def execute_agent(agent, tools, input):
 
 def socrates():
     st.image("icon.jpg", width=100)
-    st.markdown("# Hi. I am SocrAItes. How can I help you?")
+    st.markdown("# Hi. I am the inquisitorial SocrAItes. How can I help you?")
 
     if "messages" not in st.session_state:
         st.session_state.messages = []
