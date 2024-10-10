@@ -9,7 +9,7 @@ from langchain_core.agents import AgentFinish
 from subpages.cfu import cfu
 
 st.set_page_config(
-    page_title="SocrAItes",
+    page_title="SocrAItes Conversational",
     page_icon="icon.jpg",
 )
 
@@ -46,23 +46,23 @@ def socrates():
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
-    if "thread_id_1" not in st.session_state:
+    if "thread_id" not in st.session_state:
         thread = client.beta.threads.create()
-        st.session_state.thread_id_1 = thread.id
+        st.session_state.thread_id = thread.id
 
     if 'mongo_collection' not in st.session_state:
         MONGO_URL=os.getenv('MONGO_URL')
         myclient = pymongo.MongoClient(MONGO_URL)
         mydb = myclient["socraites"]
         st.session_state.mongo_collection = mydb["conversations"]
-        st.session_state.mongo_collection.insert_one({"thread_id": st.session_state.thread_id_1, "messages": ""})
+        st.session_state.mongo_collection.insert_one({"thread_id": st.session_state.thread_id, "messages": ""})
 
     def update_mongo(role, message):
-        doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id_1})
+        doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
         messages = doc['messages']
         messages += f'{role.upper()}: {message}\n'
         st.session_state.mongo_collection.find_one_and_update(
-            {'thread_id': st.session_state.thread_id_1},
+            {'thread_id': st.session_state.thread_id},
             {
                 '$set': {"messages": messages}
             }
@@ -71,7 +71,7 @@ def socrates():
     @st.dialog("FAInman Notes of the conversation", width="large")
     def fainman_notes():
         with st.spinner("Generating your notes..."):
-            doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id_1})
+            doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
             messages = doc['messages']
             fainman_response = execute_agent(fainman_agent, {"content": messages})
             st.markdown(fainman_response)
@@ -94,7 +94,7 @@ def socrates():
 
         # Display assistant response in chat message container
         with st.chat_message("assistant", avatar='icon.jpg'):
-            asst_response = execute_agent(socraites_agent, rag_tools, {"content": prompt, "thread_id": st.session_state.thread_id_1})
+            asst_response = execute_agent(socraites_agent, rag_tools, {"content": prompt, "thread_id": st.session_state.thread_id})
             response = st.markdown(asst_response)
         # Add assistant response to chat history and mongo
         st.session_state.messages.append({"role": "assistant", "content": asst_response})
@@ -102,11 +102,11 @@ def socrates():
 
     st.button('End Conversation', on_click=lambda: st.session_state.update({"page": 2}))
 
-if "page_1" not in st.session_state:
-    st.session_state['page_1'] = 1
+if "page" not in st.session_state:
+    st.session_state['page'] = 1
 
-if st.session_state['page_1'] == 1:
+if st.session_state['page'] == 1:
     socrates()
 
-if st.session_state['page_1'] == 2:
+if st.session_state['page'] == 2:
     cfu()
