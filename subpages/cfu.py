@@ -22,8 +22,13 @@ def cfu():
     doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
     messages = doc['messages']
 
-    if st.button("View transcript"):
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("View transcript"):
             text_dialog(messages)
+    with col2:
+        if st.button("View Feynman notes"):
+            text_dialog(st.session_state.feynman_notes)
 
     if 'submitted' not in st.session_state:
         st.session_state.submitted = []
@@ -52,7 +57,8 @@ def cfu():
             if q not in st.session_state.submitted:
                 st.session_state.submitted.append(q)
 
-    if len(st.session_state.submitted) == len(st.session_state.cfu_questions):
-        if st.button("View Feynman notes"):
-            text_dialog(st.session_state.feynman_notes)
+    # Uncomment following if we want to show notes after all questions are answered
+    #if len(st.session_state.submitted) == len(st.session_state.cfu_questions):
+    #    if st.button("View Feynman notes"):
+    #        text_dialog(st.session_state.feynman_notes)
     
