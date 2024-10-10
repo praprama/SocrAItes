@@ -9,3 +9,4 @@ def initialize():
     os.environ["SOCRAITES_ASST"] = st.secrets.SOCRAITES_ASST
     os.environ["FAINMAN_ASST"] = st.secrets.FAINMAN_ASST
     os.environ["MONGO_URL"] = st.secrets.MONGO_URL
+    os.environ["SOCRAITES_SUGGESTIVE"] = st.secrets.SOCRAITES_SUGGESTIVE

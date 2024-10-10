@@ -33,6 +33,15 @@ if st.button('Submit', key='socraites'):
     )
     st.rerun()
 
+socraites_suggestive = client.beta.assistants.retrieve(os.getenv('SOCRAITES_SUGGESTIVE'))
+socraites_instructions = st.text_area(label='SocrAItes Suggestive Instruction', value=socraites_assistant.instructions, height=600)
+if st.button('Submit', key='socraites_suggestive'):
+    updated_assistant = client.beta.assistants.update(
+        os.getenv('SOCRAITES_SUGGESTIVE'),
+        instructions=socraites_instructions
+    )
+    st.rerun()
+
 fainman_assistant = client.beta.assistants.retrieve(os.getenv('FAINMAN_ASST'))
 fainman_instructions = st.text_area(label='FAInman Assistant Instruction', value=fainman_assistant.instructions, height=600)
 if st.button('Submit', key='fainman'):
