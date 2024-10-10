@@ -84,7 +84,7 @@ def socrates():
             with st.chat_message(message["role"], avatar='icon.jpg'):
                 st.markdown(message["content"])
 
-    if prompt := st.chat_input("What is bothering you?"):
+    if prompt := st.chat_input("What do you want to learn?"):
         # Add user message to chat history and mongo
         st.session_state.messages.append({"role": "user", "content": prompt})
         update_mongo('user', prompt)
