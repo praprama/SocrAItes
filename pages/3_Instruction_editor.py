@@ -34,11 +34,11 @@ if st.button('Submit', key='socraites'):
     st.rerun()
 
 socraites_suggestive = client.beta.assistants.retrieve(os.getenv('SOCRAITES_SUGGESTIVE'))
-socraites_instructions = st.text_area(label='SocrAItes Suggestive Instruction', value=socraites_assistant.instructions, height=600)
+socraites_sugestive_instructions = st.text_area(label='SocrAItes Suggestive Instruction', value=socraites_suggestive.instructions, height=600)
 if st.button('Submit', key='socraites_suggestive'):
     updated_assistant = client.beta.assistants.update(
         os.getenv('SOCRAITES_SUGGESTIVE'),
-        instructions=socraites_instructions
+        instructions=socraites_sugestive_instructions
     )
     st.rerun()
 

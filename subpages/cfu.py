@@ -22,14 +22,6 @@ def cfu():
     doc = st.session_state.mongo_collection.find_one({"thread_id": st.session_state.thread_id})
     messages = doc['messages']
 
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("View transcript"):
-            text_dialog(messages)
-    with col2:
-        if st.button("View Feynman notes"):
-            text_dialog(st.session_state.feynman_notes)
-
     if 'submitted' not in st.session_state:
         st.session_state.submitted = []
 
@@ -41,6 +33,14 @@ def cfu():
         with st.spinner("Generating your questions..."):
             res = cfu_chain.invoke(st.session_state.feynman_notes)
             st.session_state.cfu_questions = res['cfu_questions']
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("View transcript"):
+            text_dialog(messages)
+    with col2:
+        if st.button("View Feynman notes"):
+            text_dialog(st.session_state.feynman_notes)
 
     #questions_df = pd.DataFrame().from_dict(st.session_state.cfu_questions)
     #tab_labels = questions_df['section'].tolist()
